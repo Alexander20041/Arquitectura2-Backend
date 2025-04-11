@@ -38,8 +38,8 @@ public class Usuario implements Serializable {
     )
     private Set<Roles> roles;
 
-  //  @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true )
-  //  private List<Ingreso> ingresos;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true )
+    private List<Ingreso> ingresos;
 
 }
 
