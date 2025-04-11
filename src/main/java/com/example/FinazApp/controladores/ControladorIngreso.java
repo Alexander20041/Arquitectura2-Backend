@@ -26,5 +26,26 @@ public class ControladorIngreso {
         }
     }
 
+    @GetMapping("/IngresosMensualesPormes/{id_usuario}")
+    public ResponseEntity<List<IngresoDTO>> listarIngresosMensuales(@PathVariable Long id_usuario) {
+
+        List<IngresoDTO> ingresos = servicioIngreso.buscarIngresosMensualesPorMes(id_usuario);
+        if (ingresos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(ingresos);
+    }
+
+    @GetMapping("/IngresosCasualesPormes/{id_usuario}")
+    public ResponseEntity<List<IngresoDTO>> listarIngresosCasuales(@PathVariable Long id_usuario) {
+
+        List<IngresoDTO> ingresos = servicioIngreso.buscarIngresosCasualesPorMes(id_usuario);
+
+        if (ingresos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(ingresos);
+    }
 
 }
