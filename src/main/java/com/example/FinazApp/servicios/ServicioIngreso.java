@@ -50,34 +50,4 @@ public class ServicioIngreso {
     }
 
 
-    public List<IngresoDTO> buscarIngresosMensualesPorMes(Long idUsuario) {
-
-        List<Ingreso> ingresos = repositorioIngreso.findIngresosMensualesDelMes(idUsuario);
-
-        return ingresos.stream()
-                .map(ingreso -> IngresoDTO.builder()
-                        .id(ingreso.getId())
-                        .valor(ingreso.getValor())
-                        .fecha(ingreso.getFecha())
-                        .nombreIngreso(ingreso.getNombreIngreso())
-                        .tipoIngreso(ingreso.getTipoIngreso())
-                        .build())
-                .toList();
-    }
-
-    public List<IngresoDTO> buscarIngresosCasualesPorMes(Long idUsuario) {
-
-        List<Ingreso> ingresos = repositorioIngreso.findIngresosCasualesDelMes(idUsuario);
-
-        return ingresos.stream()
-                .map(ingreso -> IngresoDTO.builder()
-                        .id(ingreso.getId())
-                        .valor(ingreso.getValor())
-                        .fecha(ingreso.getFecha())
-                        .nombreIngreso(ingreso.getNombreIngreso())
-                        .tipoIngreso(ingreso.getTipoIngreso())
-                        .build())
-                .toList();
-    }
-
 }
