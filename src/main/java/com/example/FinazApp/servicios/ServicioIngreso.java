@@ -80,4 +80,33 @@ public class ServicioIngreso {
                 .toList();
     }
 
+    //Metodo para modificar ingresos
+    public IngresoDTO modificarIngreso(Long idIngreso, IngresoDTO ingresoDTO) {
+
+        // Paso 1: Buscar el ingreso
+        Ingreso ingreso = repositorioIngreso.findById(idIngreso)
+                .orElseThrow(() -> new RuntimeException("Ingreso no encontrado"));
+
+        // Paso 2: Actualizar campos
+        ingreso.setValor(ingresoDTO.getValor());
+        ingreso.setFecha(ingresoDTO.getFecha());
+        ingreso.setNombreIngreso(ingresoDTO.getNombreIngreso());
+        ingreso.setTipoIngreso(ingresoDTO.getTipoIngreso());
+
+        // Paso 3: Guardar
+        Ingreso ingresoActualizado = repositorioIngreso.save(ingreso);
+
+        // Paso 4: Construir el DTO actualizado
+        return IngresoDTO.builder()
+                .id(ingresoActualizado.getId())
+                .valor(ingresoActualizado.getValor())
+                .fecha(ingresoActualizado.getFecha())
+                .nombreIngreso(ingresoActualizado.getNombreIngreso())
+                .tipoIngreso(ingresoActualizado.getTipoIngreso())
+                .idUsuario(ingresoActualizado.getUsuario().getId())
+                .build();
+    }
+
+
+
 }

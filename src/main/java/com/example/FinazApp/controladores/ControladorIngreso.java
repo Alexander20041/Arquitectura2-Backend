@@ -48,4 +48,16 @@ public class ControladorIngreso {
         return ResponseEntity.ok(ingresos);
     }
 
+    @PutMapping("/modificarIngresos/{id_ingreso}")
+    public ResponseEntity<IngresoDTO> modificarIngresos(@PathVariable Long id_ingreso,@RequestBody IngresoDTO ingreso) {
+
+        IngresoDTO ingresoDTO = servicioIngreso.modificarIngreso(id_ingreso, ingreso);
+
+        if (ingresoDTO != null) {
+            return ResponseEntity.ok(ingresoDTO);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 }
