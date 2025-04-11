@@ -25,6 +25,8 @@ public class ServicioUsuario {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    //Primera historia de usuario: Registro
+
     public UsuarioDTO registrarUsuario(UsuarioDTO usuarioDTO) {
 
         // Construcción del usuario con patrón Builder

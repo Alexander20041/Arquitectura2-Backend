@@ -18,6 +18,8 @@ public class ControladorUsuario {
     @Autowired
     ServicioUsuario servicioUsuario;
 
+    //Primera historia de usuario: Registro
+
     @PostMapping("/registro")
     public ResponseEntity<UsuarioDTO> registrarUsuario(@RequestBody UsuarioDTO usuario) {
 
