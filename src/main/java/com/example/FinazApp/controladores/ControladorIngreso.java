@@ -40,4 +40,62 @@ public class ControladorIngreso {
 
         return ResponseEntity.ok(ingresos);
     }
+
+    @GetMapping("/IngresosMensuales/{id_usuario}")
+    public ResponseEntity<List<IngresoDTO>> listarIngresos(@PathVariable Long id_usuario) {
+
+        List<IngresoDTO> ingresos = servicioIngreso.BuscarIngresosMensuales(id_usuario);
+
+
+        if (ingresos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(ingresos);
+    }
+
+    @GetMapping("/IngresosCasuales/{id_usuario}")
+    public ResponseEntity<List<IngresoDTO>> listarIngresosCasuales(@PathVariable Long id_usuario) {
+
+        List<IngresoDTO> ingresos = servicioIngreso.BuscarIngresosCasuales(id_usuario);
+
+
+        if (ingresos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(ingresos);
+    }
+
+
+    @GetMapping("/ingresostotal/{id_usuario}")
+    public ResponseEntity<Double> obtenerTotalIngresos(@PathVariable Long id_usuario) {
+        Double totalIngresos = servicioIngreso.BuscarIngresosTotales(id_usuario);
+
+        if (totalIngresos == 0.0) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(totalIngresos);
+    }
+
+    @GetMapping("/ingresosmensuales/{id_usuario}/{anio}/{mes}")
+    public ResponseEntity<List<IngresoDTO>> getIngresosMensuales(
+            @PathVariable("id_usuario") Long usuarioId,
+            @PathVariable("anio") Integer anio,
+            @PathVariable("mes") Integer mes) {
+
+        // Verifica que los parámetros no sean nulos
+        if (usuarioId == null || anio == null || mes == null) {
+            return ResponseEntity.badRequest().build(); // Responde con error 400 si hay parámetros nulos
+        }
+
+        // Llama al servicio para obtener los ingresos mensuales
+        List<IngresoDTO> ingresosMensuales = servicioIngreso.BuscarIngresosMensuales(usuarioId, anio, mes);
+
+        return ResponseEntity.ok(ingresosMensuales); // Devuelve la respuesta con los ingresos encontrados
+    }
+
+
+
     }

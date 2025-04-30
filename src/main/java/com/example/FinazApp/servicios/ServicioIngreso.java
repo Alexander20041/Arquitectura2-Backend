@@ -55,4 +55,36 @@ public class ServicioIngreso implements Serializable {
                 .map(ingreso -> modelMapper.map(ingreso, IngresoDTO.class))
                 .collect(Collectors.toList());
     }
+
+    public List<IngresoDTO> BuscarIngresosCasuales(Long id_usuario){
+
+        List<Ingreso> ingresos = repositorioIngreso.findIngresosCasualesDelMes(id_usuario);
+
+        return ingresos.stream()
+                .map(ingreso -> modelMapper.map(ingreso, IngresoDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    public Double BuscarIngresosTotales(Long id_usuario) {
+        // Consultar el total de ingresos directamente desde el repositorio
+        Double totalIngresos = repositorioIngreso.getIngTotalDeEsteMes(id_usuario);
+
+        // Manejo de posibles valores nulos
+        if (totalIngresos == null) {
+            totalIngresos = 0.0;
+        }
+
+        return totalIngresos;
+    }
+
+    public List<IngresoDTO> BuscarIngresosMensuales(Long usuarioId, Integer anio, Integer mes) {
+        List<Ingreso> ingresosMensuales = repositorioIngreso.getIngresosMensuales(usuarioId, anio, mes);
+
+
+        return ingresosMensuales.stream()
+                .map(ingreso -> modelMapper.map(ingreso, IngresoDTO.class))
+                .collect(Collectors.toList());
+    }
+
+
 }
