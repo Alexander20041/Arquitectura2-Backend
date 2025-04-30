@@ -2,23 +2,19 @@ package com.example.FinazApp.controladores;
 
 import com.example.FinazApp.DTOs.UsuarioDTO;
 import com.example.FinazApp.servicios.ServicioUsuario;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@Log4j2
 @RestController
 @RequestMapping("/Finanzapp")
 public class ControladorUsuario {
 
-    //Inyección de dependencias
     @Autowired
     ServicioUsuario servicioUsuario;
-
-    //Primera historia de usuario: Registro
 
     @PostMapping("/registro")
     public ResponseEntity<UsuarioDTO> registrarUsuario(@RequestBody UsuarioDTO usuario) {

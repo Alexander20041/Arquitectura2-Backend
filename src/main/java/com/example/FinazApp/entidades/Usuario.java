@@ -4,31 +4,32 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table (name = "usuarios")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+
 public class Usuario implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(unique = true)
+    private Long id_usuario;
+    @Column(name = "USERNAME" , unique = true)
     private String username;
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, name = "EMAIL",unique = true)
     private String email;
-    @Column(nullable = false)
+    @Column(name = "NOMBRE")
     private String nombre;
-    @Column(nullable = false)
+    @Column(name = "APELLIDO")
     private String apellido;
-    @Column(nullable = false)
+    @Column(name = "CONTRASENA")
     private String contrasena;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -37,9 +38,6 @@ public class Usuario implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Roles> roles;
-
-  //  @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true )
-  //  private List<Ingreso> ingresos;
 
 }
 

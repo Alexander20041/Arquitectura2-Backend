@@ -6,37 +6,46 @@ import com.example.FinazApp.entidades.Roles;
 import com.example.FinazApp.entidades.Usuario;
 import com.example.FinazApp.repositorios.RepositorioRoles;
 import com.example.FinazApp.repositorios.RepositorioUsuario;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Data
 @Service
-public class ServicioUsuario {
+@AllArgsConstructor
+public class ServicioUsuario  {
 
-    @Autowired
-    RepositorioUsuario repositorioUsuario;  // Repositorio para operaciones CRUD de usuarios
-    @Autowired
-    RepositorioRoles repositorioRoles; // Repositorio para obtener roles disponibles
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    private ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final RepositorioUsuario repositorioUsuario;
+    private final RepositorioRoles repositorioRoles;
 
-    //Primera historia de usuario: Registro
+
 
     public UsuarioDTO registrarUsuario(UsuarioDTO usuarioDTO) {
+        if (repositorioUsuario.findByUsername(usuarioDTO.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("El nombre de usuario ya está en uso");
+        }
 
-        // Construcción del usuario con patrón Builder
-        Usuario nuevoUsuario = Usuario.builder()
-                .nombre(usuarioDTO.getNombre())
-                .apellido(usuarioDTO.getApellido())
-                .email(usuarioDTO.getEmail())
-                .username(usuarioDTO.getUsername())
-                .contrasena(passwordEncoder.encode(usuarioDTO.getContrasena())) // Encriptar
-                .build();
+        if (repositorioUsuario.findByEmail(usuarioDTO.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("El correo electrónico ya está en uso");
+        }
+
+        Usuario nuevoUsuario = modelMapper.map(usuarioDTO, Usuario.class);
+        nuevoUsuario.setContrasena(passwordEncoder.encode(usuarioDTO.getContrasena())); // Encriptar
 
         // Asignar roles
         Set<Roles> roles = usuarioDTO.getRoles().stream()
@@ -46,23 +55,10 @@ public class ServicioUsuario {
 
         nuevoUsuario.setRoles(roles);
 
-        // Guardar en base de datos
         Usuario usuarioGuardado = repositorioUsuario.save(nuevoUsuario);
-
-        // Retornar manualmente el DTO (sin ModelMapper)
-        UsuarioDTO usuarioGuardadoDTO = UsuarioDTO.builder()
-                .id(usuarioGuardado.getId())
-                .nombre(usuarioGuardado.getNombre())
-                .apellido(usuarioGuardado.getApellido())
-                .email(usuarioGuardado.getEmail())
-                .username(usuarioGuardado.getUsername())
-                .roles(usuarioGuardado.getRoles().stream()
-                        .map(rol -> rol.getName().name())
-                        .collect(Collectors.toSet()))
-                .build();
-
-        return usuarioGuardadoDTO;
+        return modelMapper.map(usuarioGuardado, UsuarioDTO.class);
     }
+
 
 
 

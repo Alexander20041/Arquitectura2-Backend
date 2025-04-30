@@ -1,17 +1,18 @@
 package com.example.FinazApp.DTOs;
 
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class UsuarioDTO {
 
-    private Long id;
+    private Long id_usuario;
     private String username;
     private String nombre;
     private String email;
