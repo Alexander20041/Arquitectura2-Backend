@@ -17,9 +17,9 @@ public class ControladorIngreso {
     ServicioIngreso servicioIngreso;
 
     @PostMapping("/registrarIngreso/{id_usuario}")
-    public ResponseEntity<IngresoDTO> registrarUsuario(@RequestBody IngresoDTO ingreso , @PathVariable Long id_usuario) {
+    public ResponseEntity<IngresoDTO> registrarUsuario(@RequestBody IngresoDTO ingreso, @PathVariable Long id_usuario) {
 
-        IngresoDTO ingresoInsertado = servicioIngreso.RegistrarIngreso(ingreso , id_usuario);
+        IngresoDTO ingresoInsertado = servicioIngreso.RegistrarIngreso(ingreso, id_usuario);
 
         if (ingresoInsertado != null) {
             return ResponseEntity.ok(ingresoInsertado);
@@ -94,6 +94,19 @@ public class ControladorIngreso {
         List<IngresoDTO> ingresosMensuales = servicioIngreso.BuscarIngresosMensuales(usuarioId, anio, mes);
 
         return ResponseEntity.ok(ingresosMensuales); // Devuelve la respuesta con los ingresos encontrados
+    }
+
+    @PutMapping("/modificar/{id_ingreso}")
+    public ResponseEntity<IngresoDTO> modificarIngreso( @PathVariable Long id_ingreso, @RequestBody IngresoDTO ingresoDTO) {
+
+
+        IngresoDTO gastoregistrado =   servicioIngreso.ModificarIngreso(id_ingreso , ingresoDTO);
+
+        if (gastoregistrado != null) {
+            return ResponseEntity.ok(gastoregistrado);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 
