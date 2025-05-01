@@ -109,6 +109,12 @@ public class ControladorIngreso {
         }
     }
 
+    @DeleteMapping("/EliminarIngresos/{id_ingreso}")
+    public ResponseEntity<Void> eliminarIngreso(@PathVariable("id_ingreso") Long id_ingreso) {
+        servicioIngreso.eliminarIngreso(id_ingreso);
+        return ResponseEntity.noContent().build();
+    }
+
 
 
     }
