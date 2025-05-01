@@ -77,6 +77,19 @@ public class ControladorGasto {
         return ResponseEntity.ok(ValorGeneral != null ? ValorGeneral : 0.0);
     }
 
+    @GetMapping("/rango/{id_usuario}/{fecha_inicio}/{fecha_final}/{categoria}")
+    public ResponseEntity<List<GastoDTO>> ListarPorFechas(@PathVariable Long id_usuario ,  @PathVariable LocalDate fecha_inicio , @PathVariable LocalDate fecha_final ,@PathVariable String categoria ) {
+
+        List<GastoDTO>  gastos = servicioGasto.obtenerGastosPorRangoDeFechas(id_usuario , fecha_inicio, fecha_final , categoria);
+
+        if (gastos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(gastos);
+
+    }
+
     @PutMapping("/ModificarGastos/{id_gasto}")
     public ResponseEntity<GastoDTO> modificarGasto(@RequestBody GastoDTO gasto, @PathVariable Long id_gasto) {
 
@@ -102,8 +115,5 @@ public class ControladorGasto {
         servicioGasto.EliminarGasto(id_gasto);
         return ResponseEntity.noContent().build();
     }
-
-
-
 
 }

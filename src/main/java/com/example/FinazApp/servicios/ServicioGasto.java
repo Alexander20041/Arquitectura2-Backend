@@ -85,6 +85,7 @@ public class ServicioGasto {
 
     }
 
+
     public void EliminarGasto (Long id_gasto){
         repositorioGasto.deleteById(id_gasto);
     }

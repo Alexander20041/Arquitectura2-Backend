@@ -57,6 +57,8 @@ public interface RepositorioGasto extends JpaRepository<Gasto, Long>, JpaSpecifi
     @Query("SELECT SUM(g.valor) FROM Gasto g WHERE g.usuario.id_usuario = :usuarioId AND EXTRACT(YEAR FROM g.fecha) = EXTRACT(YEAR FROM CURRENT_DATE) AND EXTRACT(MONTH FROM g.fecha) = EXTRACT(MONTH FROM CURRENT_DATE)")
     Double getValorGastosMes(@Param("usuarioId") Long usuarioId);
 
+
+
     Optional<Gasto> findById(Long id_gasto);
 
     void deleteById(Long id_gasto);
