@@ -46,4 +46,29 @@ public class ControladorRecordatorio {
             return ResponseEntity.badRequest().build();
         }
     }
+
+
+    @PutMapping("/modificar/Recordatorio/{id_recordatorio}")
+    public ResponseEntity<RecordatorioDTO> modificarRecordatorio(
+            @PathVariable Long id_recordatorio,
+            @RequestBody RecordatorioDTO recordatorioDTO) {
+        try {
+            RecordatorioDTO recordatorioActualizado = servicioRecordatorio.ModificarRecordatorio(id_recordatorio, recordatorioDTO);
+            return ResponseEntity.ok(recordatorioActualizado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @DeleteMapping("/EliminarRecordatorios/{id_recordatorio}")
+    public ResponseEntity<Void> eliminarRecordatorio(@PathVariable("id_recordatorio") Long id_recordatorio) {
+        servicioRecordatorio.EliminarRecordatorio(id_recordatorio);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/eliminartodos/{id_usuario}")
+    public ResponseEntity<String> eliminarTodos(@PathVariable Long id_usuario) {
+        servicioRecordatorio.eliminarTodosLosRecordatorios(id_usuario);
+        return ResponseEntity.ok("Todos los recordatorios han sido eliminados.");
+    }
 }

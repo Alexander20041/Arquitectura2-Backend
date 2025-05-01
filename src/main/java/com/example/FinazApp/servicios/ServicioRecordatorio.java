@@ -5,12 +5,14 @@ import com.example.FinazApp.entidades.Recordatorio;
 import com.example.FinazApp.entidades.Usuario;
 import com.example.FinazApp.repositorios.RepositorioRecordatorio;
 import com.example.FinazApp.repositorios.RepositorioUsuario;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,5 +57,51 @@ public class ServicioRecordatorio {
                 .map(recordatorio -> modelMapper.map(recordatorio, RecordatorioDTO.class))
                 .collect(Collectors.toList());
     }
+
+    public RecordatorioDTO ModificarRecordatorio(Long id_recordatorio, RecordatorioDTO recordatorioDTO) {
+        // Buscar el recordatorio por su ID en el repositorio
+        Optional<Recordatorio> recordatorioOptional = repositorioRecordatorio.findById(id_recordatorio);
+
+        // Validar si el recordatorio existe
+        if (recordatorioOptional.isPresent()) {
+            Recordatorio recordatorio = recordatorioOptional.get();
+
+            // Actualizar los campos del recordatorio con los datos del DTO
+            recordatorio.setNombre(recordatorioDTO.getNombre());
+            recordatorio.setEstado(recordatorioDTO.getEstado());
+            recordatorio.setFecha(recordatorioDTO.getFecha());
+            recordatorio.setDias_recordatorio(recordatorioDTO.getDias_recordatorio());
+            recordatorio.setValor(recordatorioDTO.getValor());
+
+            // Guardar los cambios en el repositorio
+            Recordatorio recordatorioActualizado = repositorioRecordatorio.save(recordatorio);
+
+            // Convertir la entidad actualizada en un DTO para retornarlo
+            RecordatorioDTO recordatorioActualizadoDTO = new RecordatorioDTO();
+            recordatorioActualizadoDTO.setId_recordatorio(recordatorioActualizado.getId_recordatorio());
+            recordatorioActualizadoDTO.setNombre(recordatorioActualizado.getNombre());
+            recordatorioActualizadoDTO.setEstado(recordatorioActualizado.getEstado());
+            recordatorioActualizadoDTO.setFecha(recordatorioActualizado.getFecha());
+            recordatorioActualizadoDTO.setDias_recordatorio((recordatorioActualizado.getDias_recordatorio()));
+            recordatorioActualizadoDTO.setValor(recordatorioActualizado.getValor());
+
+            return recordatorioActualizadoDTO;
+        } else {
+            // Lanza una excepción si el recordatorio no existe
+            throw new RuntimeException("El recordatorio con ID " + id_recordatorio + " no existe.");
+        }
+    }
+
+    public void EliminarRecordatorio (Long id_recordatorio){
+
+        repositorioRecordatorio.deleteById(id_recordatorio);
+
+    }
+
+    @Transactional
+    public void eliminarTodosLosRecordatorios(Long id_usuario) {
+        repositorioRecordatorio.deleteByUsuario(id_usuario);
+    }
+
 
 }

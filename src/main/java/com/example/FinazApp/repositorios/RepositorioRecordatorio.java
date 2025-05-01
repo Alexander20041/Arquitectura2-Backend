@@ -22,5 +22,11 @@ public interface RepositorioRecordatorio  extends JpaRepository<Recordatorio, Lo
     @Query("SELECT r from Recordatorio r WHERE r.nombre = :nombre")
     List<Recordatorio> findByNombre(String nombre);
 
+    void deleteById(Long id_recordatorio);
+
+    @Modifying
+    @Query("DELETE FROM Recordatorio r WHERE r.usuario.id_usuario = :usuarioId")
+    void deleteByUsuario(@Param("usuarioId") Long usuarioId);
+
 
 }
