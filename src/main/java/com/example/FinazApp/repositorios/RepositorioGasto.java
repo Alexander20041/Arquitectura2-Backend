@@ -4,12 +4,14 @@ import com.example.FinazApp.entidades.Gasto;
 import com.example.FinazApp.entidades.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RepositorioGasto extends JpaRepository<Gasto, Long>, JpaSpecificationExecutor<Gasto> {
@@ -54,6 +56,17 @@ public interface RepositorioGasto extends JpaRepository<Gasto, Long>, JpaSpecifi
 
     @Query("SELECT SUM(g.valor) FROM Gasto g WHERE g.usuario.id_usuario = :usuarioId AND EXTRACT(YEAR FROM g.fecha) = EXTRACT(YEAR FROM CURRENT_DATE) AND EXTRACT(MONTH FROM g.fecha) = EXTRACT(MONTH FROM CURRENT_DATE)")
     Double getValorGastosMes(@Param("usuarioId") Long usuarioId);
+
+    Optional<Gasto> findById(Long id_gasto);
+
+    void deleteById(Long id_gasto);
+
+    @Modifying
+    @Query("DELETE FROM Gasto g WHERE g.usuario.id_usuario = :usuarioId AND g.categoria = :categoria")
+    void deleteByUsuarioIdAndCategoria(@Param("usuarioId") Long usuarioId,
+                                       @Param("categoria") String categoria);
+
+
 
 }
 

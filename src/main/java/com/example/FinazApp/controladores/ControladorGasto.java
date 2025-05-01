@@ -77,6 +77,33 @@ public class ControladorGasto {
         return ResponseEntity.ok(ValorGeneral != null ? ValorGeneral : 0.0);
     }
 
+    @PutMapping("/ModificarGastos/{id_gasto}")
+    public ResponseEntity<GastoDTO> modificarGasto(@RequestBody GastoDTO gasto, @PathVariable Long id_gasto) {
+
+        GastoDTO gastoregistrado = servicioGasto.ModificarGasto(id_gasto , gasto );
+
+        if (gastoregistrado != null) {
+            return ResponseEntity.ok(gastoregistrado);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping("/EliminarTodosLosGastos/{id_usuario}/{categoria}")
+    public ResponseEntity<Void> eliminarGastos(@PathVariable("id_usuario") Long idUsuario,
+                                               @PathVariable("categoria") String categoria) {
+        servicioGasto.eliminarTodosLosGastos(categoria , idUsuario);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @DeleteMapping("/EliminarGastos/{id_gasto}")
+    public ResponseEntity<Void> eliminarGasto(@PathVariable("id_gasto") Long id_gasto) {
+        servicioGasto.EliminarGasto(id_gasto);
+        return ResponseEntity.noContent().build();
+    }
+
+
 
 
 }

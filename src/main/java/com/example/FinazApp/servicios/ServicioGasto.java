@@ -6,6 +6,7 @@ import com.example.FinazApp.entidades.Usuario;
 import com.example.FinazApp.repositorios.RepositorioGasto;
 import com.example.FinazApp.repositorios.RepositorioIngreso;
 import com.example.FinazApp.repositorios.RepositorioUsuario;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
@@ -82,6 +84,50 @@ public class ServicioGasto {
                 .map(gasto -> modelMapper.map(gasto, GastoDTO.class))
                 .toList();
 
+    }
+
+
+
+
+    public GastoDTO ModificarGasto(Long id_gasto, GastoDTO gastoDTO) {
+        // Buscar el gasto por su ID en el repositorio
+        Optional<Gasto> gastoOptional = repositorioGasto.findById(id_gasto);
+
+        // Validar si el gasto existe
+        if (gastoOptional.isPresent()) {
+            Gasto gasto = gastoOptional.get();
+
+            // Actualizar los campos del gasto con los datos del DTO
+            gasto.setNombre_gasto(gastoDTO.getNombre_gasto());
+            gasto.setCategoria(gastoDTO.getCategoria());
+            gasto.setValor(gastoDTO.getValor());
+            gasto.setFecha(gastoDTO.getFecha());
+
+            // Guardar los cambios en el repositorio
+            Gasto gastoActualizado = repositorioGasto.save(gasto);
+
+            // Convertir la entidad actualizada de nuevo en un DTO para retornarlo
+            GastoDTO gastoActualizadoDTO = new GastoDTO();
+            gastoActualizadoDTO.setId_gasto(gastoActualizado.getId_gasto());
+            gastoActualizadoDTO.setNombre_gasto(gastoActualizado.getNombre_gasto());
+            gastoActualizadoDTO.setCategoria(gastoActualizado.getCategoria());
+            gastoActualizadoDTO.setValor(gastoActualizado.getValor());
+            gastoActualizadoDTO.setFecha(gastoActualizado.getFecha());
+
+            return gastoActualizadoDTO;
+        } else {
+            // Lanza una excepción si el gasto no existe
+            throw new RuntimeException("El gasto con ID " + id_gasto + " no existe.");
+        }
+    }
+
+    public void EliminarGasto (Long id_gasto){
+        repositorioGasto.deleteById(id_gasto);
+    }
+
+    @Transactional
+    public void eliminarTodosLosGastos(String Categoria , Long id_usuario) {
+        repositorioGasto.deleteByUsuarioIdAndCategoria(id_usuario , Categoria);
     }
 
 
