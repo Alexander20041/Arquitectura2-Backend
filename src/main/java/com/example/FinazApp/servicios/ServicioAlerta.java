@@ -11,6 +11,9 @@ import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Data
 @AllArgsConstructor
@@ -33,6 +36,38 @@ public class ServicioAlerta {
         Alerta AlertaGuardada = repositorioAlerta.save(nuevaAlerta);
 
         return modelMapper.map(AlertaGuardada, AlertaDTO.class);
+
+    }
+
+    public List<AlertaDTO> ObtenerAlerta(Long id_usuario) {
+
+        List<Alerta> alertas  = repositorioAlerta.getAlertasPorUsuario(id_usuario);
+
+        return alertas.stream()
+                .map(alerta -> modelMapper.map(alerta, AlertaDTO.class))
+                .collect(Collectors.toList());
+
+    }
+
+
+    public List<AlertaDTO> ObtenerAlertaFecha(Long id_usuario) {
+
+        List<Alerta> alertas  = repositorioAlerta.getAlertasDeEsteAno(id_usuario);
+
+        return alertas.stream()
+                .map(alerta -> modelMapper.map(alerta, AlertaDTO.class))
+                .collect(Collectors.toList());
+
+    }
+
+
+    public List<AlertaDTO> ObtenerAlertaEsteMes(Long id_usuario) {
+
+        List<Alerta> alertas  = repositorioAlerta.getAlertasDeEsteMes(id_usuario);
+
+        return alertas.stream()
+                .map(alerta -> modelMapper.map(alerta, AlertaDTO.class))
+                .collect(Collectors.toList());
 
     }
 
