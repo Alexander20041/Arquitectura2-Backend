@@ -92,4 +92,15 @@ public class ServicioRecordatorio {
         }
     }
 
+    public void EliminarRecordatorio (Long id_recordatorio){
+
+        repositorioRecordatorio.deleteById(id_recordatorio);
+
+    }
+
+    @Transactional
+    public void eliminarTodosLosRecordatorios(Long id_usuario) {
+        repositorioRecordatorio.deleteByUsuario(id_usuario);
+    }
+
 }

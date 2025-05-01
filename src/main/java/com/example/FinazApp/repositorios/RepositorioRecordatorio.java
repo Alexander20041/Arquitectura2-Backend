@@ -24,6 +24,8 @@ public interface RepositorioRecordatorio  extends JpaRepository<Recordatorio, Lo
 
     void deleteById(Long id_recordatorio);
 
-
+    @Modifying
+    @Query("DELETE FROM Recordatorio r WHERE r.usuario.id_usuario = :usuarioId")
+    void deleteByUsuario(@Param("usuarioId") Long usuarioId);
 
 }
