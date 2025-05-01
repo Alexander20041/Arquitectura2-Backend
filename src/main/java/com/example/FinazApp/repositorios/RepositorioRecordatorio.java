@@ -14,4 +14,13 @@ import java.util.Optional;
 @Repository
 public interface RepositorioRecordatorio  extends JpaRepository<Recordatorio, Long>, JpaSpecificationExecutor<Recordatorio>  {
 
+    Optional<Recordatorio> findById(Long aLong);
+
+    @Query("SELECT r FROM Recordatorio r WHERE r.usuario.id_usuario = :usuarioId")
+    List<Recordatorio> findByUsuarioId(Long usuarioId);
+
+    @Query("SELECT r from Recordatorio r WHERE r.nombre = :nombre")
+    List<Recordatorio> findByNombre(String nombre);
+
+
 }

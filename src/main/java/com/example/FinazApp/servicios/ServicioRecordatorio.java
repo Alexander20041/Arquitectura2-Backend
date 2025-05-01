@@ -10,6 +10,9 @@ import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Data
 @AllArgsConstructor
@@ -33,6 +36,24 @@ public class ServicioRecordatorio {
 
         return modelMapper.map(RecordatorioGuardada, RecordatorioDTO.class);
 
+    }
+
+    public List<RecordatorioDTO> ListarRecordatorios(Long usuarioId) {
+
+        List<Recordatorio> recordatorios = repositorioRecordatorio.findByUsuarioId(usuarioId);
+
+        return recordatorios.stream()
+                .map(recordatorio -> modelMapper.map(recordatorio, RecordatorioDTO.class))
+                .collect(Collectors.toList());
+
+    }
+
+    public  List<RecordatorioDTO> BuscarPorNombre(String nombre) {
+        List<Recordatorio> recordatorios = repositorioRecordatorio.findByNombre(nombre);
+
+        return recordatorios.stream()
+                .map(recordatorio -> modelMapper.map(recordatorio, RecordatorioDTO.class))
+                .collect(Collectors.toList());
     }
 
 }
