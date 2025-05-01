@@ -1,6 +1,8 @@
 package com.example.FinazApp.controladores;
 
+import com.example.FinazApp.DTOs.CategoriaTotalDTO;
 import com.example.FinazApp.DTOs.GastoDTO;
+import com.example.FinazApp.DTOs.ProyeccionDTO;
 import com.example.FinazApp.servicios.ServicioGasto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -139,5 +141,80 @@ public class ControladorGasto {
         }
 
         return ResponseEntity.ok(gastos);
+    }
+
+
+    @GetMapping("/ObtenerPromedioGastos/{id_usuario}")
+    public ResponseEntity<Double> Promedio(@PathVariable Long id_usuario) {
+
+        Double gastos = servicioGasto.ObtenerPromedioDeGastos(id_usuario);
+
+        if (gastos != null ) {
+            return ResponseEntity.ok(gastos);
+        }
+        return ResponseEntity.badRequest().build();
+
+    }
+
+    @GetMapping("/ObtenerGastoRecurrente/{id_usuario}")
+    public ResponseEntity<String> GastoRecurrente(@PathVariable Long id_usuario) {
+
+        String gastos = servicioGasto.ObtenerGastoRecurrente(id_usuario);
+
+        if (gastos == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(gastos);
+    }
+
+    @GetMapping("/ObtenerPorcentaje/{id_usuario}")
+    public ResponseEntity<Double> Porcentaje(@PathVariable Long id_usuario) {
+
+        Double gastos = servicioGasto.PorcentajeGastosSobreIngresos(id_usuario);
+
+        if (gastos != null ) {
+            return ResponseEntity.ok(gastos);
+        }
+        return ResponseEntity.badRequest().build();
+
+    }
+
+
+    @GetMapping("/CategoriaMasAlta/{id_usuario}")
+    public ResponseEntity<CategoriaTotalDTO> ListarCategorias(@PathVariable Long id_usuario) {
+
+        return ResponseEntity.ok(servicioGasto.getCategoriaConMasGastos(id_usuario));
+
+    }
+
+
+    @GetMapping("/ObtenerPromedioDiario/{id_usuario}")
+    public ResponseEntity<Double> PromedioDiario(@PathVariable Long id_usuario) {
+
+        Double gastos = servicioGasto.ObtenerPromedioDiario(id_usuario);
+
+        if (gastos != null ) {
+            return ResponseEntity.ok(gastos);
+        }
+        return ResponseEntity.badRequest().build();
+
+    }
+
+    @GetMapping("/ListarPorNombre/{id_usuario}/{nombre}/{categoria}")
+    public ResponseEntity<List<GastoDTO>> ListarPornombres (@PathVariable String nombre ,@PathVariable String categoria , @PathVariable Long id_usuario ) {
+
+        List<GastoDTO> gastos = servicioGasto.ListarPorNombres(nombre , categoria , id_usuario);
+
+        if (gastos == null) {
+            return ResponseEntity.noContent().build();
+        }   else {
+            return ResponseEntity.ok(gastos);
+        }
+
+    }
+
+    @GetMapping("/frecuentes/{usuarioId}")
+    public ResponseEntity<List<ProyeccionDTO>> obtenerGastosFrecuentes(@PathVariable Long usuarioId) {
+        return ResponseEntity.ok(servicioGasto.obtenerGastosFrecuentes(usuarioId));
     }
 }

@@ -1,8 +1,12 @@
 package com.example.FinazApp.servicios;
 
+import com.example.FinazApp.DTOs.CategoriaTotalDTO;
 import com.example.FinazApp.DTOs.GastoDTO;
+import com.example.FinazApp.DTOs.ProyeccionDTO;
 import com.example.FinazApp.entidades.Gasto;
 import com.example.FinazApp.entidades.Usuario;
+import com.example.FinazApp.interfaces.CategoriaTotal;
+import com.example.FinazApp.interfaces.GastoProjection;
 import com.example.FinazApp.repositorios.RepositorioGasto;
 import com.example.FinazApp.repositorios.RepositorioIngreso;
 import com.example.FinazApp.repositorios.RepositorioUsuario;
@@ -13,8 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
@@ -128,6 +131,7 @@ public class ServicioGasto {
         repositorioGasto.deleteByUsuarioIdAndCategoria(id_usuario , Categoria);
     }
 
+
     public GastoDTO OrdenarPorValorAlto(Long id_usuario){
 
         Gasto gastos  = repositorioGasto.getValorMasAlto(id_usuario);
@@ -135,6 +139,7 @@ public class ServicioGasto {
         return modelMapper.map(gastos, GastoDTO.class);
 
     }
+
 
     public GastoDTO OrdenarPorValorBajo(Long id_usuario){
 
@@ -145,6 +150,72 @@ public class ServicioGasto {
     }
 
 
+    public Double ObtenerPromedioDeGastos(Long id_usuario){
+
+        return  repositorioGasto.getPromedioGastosMes(id_usuario);
+
+    }
+
+
+    public String ObtenerGastoRecurrente (Long id_usuario){
+
+        return repositorioGasto.getDescripcionRecurrente(id_usuario);
+
+    }
+
+    public Double PorcentajeGastosSobreIngresos (Long id_usuario) {
+
+        return repositorioGasto.getPorcentajeGastosSobreIngresos(id_usuario);
+
+    }
+
+
+    public Double ObtenerPromedioDiario (Long id_usuario) {
+
+        return repositorioGasto.getGastoPromedioDiarioTotal(id_usuario);
+
+    }
+
+    public List<GastoDTO> ListarPorNombres(String nombre ,String  categoria , Long id_usuario) {
+
+        List<Gasto> gastos = repositorioGasto.findByNombreGastoAndCategoriaAndUsuarioId(nombre , categoria , id_usuario);
+
+        return gastos.stream()
+                .map(gasto -> modelMapper.map(gasto, GastoDTO.class))
+                .toList();
+
+    }
+
+    public List<ProyeccionDTO> obtenerGastosFrecuentes(Long usuarioId) {
+        List<GastoProjection> gastosProjections = repositorioGasto.findGastosFrecuentes(usuarioId);
+
+        return gastosProjections.stream()
+                .map(g -> new ProyeccionDTO(g.getDescripcion(), g.getCantidad(), g.getTotal()))
+                .toList();
+    }
+
+    public CategoriaTotalDTO obtenerCategoriaMasAlta(Long usuarioId) {
+        CategoriaTotal resultados = repositorioGasto.getCategoriaConMasGastos(usuarioId);
+
+        return new CategoriaTotalDTO(resultados.getCategoria(), resultados.getTotalvalor());
+    }
+
+    public CategoriaTotalDTO getCategoriaConMasGastos(Long usuarioId) {
+
+        List<Gasto> gastos = repositorioGasto.findByUsuario(usuarioId); // Recuperar todos los gastos del usuario
+
+        Map<String, Double> sumaPorCategoria = new HashMap<>();
+
+        for (Gasto gasto : gastos) {
+            sumaPorCategoria.put(gasto.getCategoria(),
+                    sumaPorCategoria.getOrDefault(gasto.getCategoria(), 0.0) + gasto.getValor());
+        }
+
+        return sumaPorCategoria.entrySet().stream()
+                .max(Comparator.comparingDouble(Map.Entry::getValue))
+                .map(entry -> new CategoriaTotalDTO(entry.getKey(), entry.getValue()))
+                .orElse(null);
+    }
 
 }
 

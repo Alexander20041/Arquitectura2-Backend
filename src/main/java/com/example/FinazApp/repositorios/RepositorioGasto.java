@@ -2,6 +2,8 @@ package com.example.FinazApp.repositorios;
 
 import com.example.FinazApp.entidades.Gasto;
 import com.example.FinazApp.entidades.Usuario;
+import com.example.FinazApp.interfaces.CategoriaTotal;
+import com.example.FinazApp.interfaces.GastoProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -73,6 +75,46 @@ public interface RepositorioGasto extends JpaRepository<Gasto, Long>, JpaSpecifi
 
     @Query("SELECT g FROM Gasto g WHERE g.usuario.id_usuario= :usuarioId ORDER BY g.valor  ASC LIMIT 1")
     Gasto getValorMasBajo(@Param("usuarioId") Long usuarioId);
+
+    @Query("SELECT AVG(g.valor) FROM Gasto g WHERE g.usuario.id_usuario = :usuarioId AND EXTRACT(YEAR FROM g.fecha) = EXTRACT(YEAR FROM CURRENT_DATE) \n" +
+            "AND EXTRACT(MONTH FROM g.fecha) = EXTRACT(MONTH FROM CURRENT_DATE)  ")
+    Double getPromedioGastosMes(@Param("usuarioId") Long usuarioId);
+
+    @Query("SELECT g.nombre_gasto FROM Gasto g WHERE g.usuario.id_usuario = :usuarioId " +
+            "GROUP BY g.nombre_gasto ORDER BY COUNT (g.nombre_gasto) DESC LIMIT 1")
+    String getDescripcionRecurrente(@Param("usuarioId") Long usuarioId);
+
+    @Query("SELECT (COALESCE(SUM(g.valor), 0) / COALESCE(SUM(i.valor), 1)) * 100 " +
+            "FROM Gasto g, Ingreso i " +
+            "WHERE g.usuario.id_usuario = :usuarioId AND i.usuario.id_usuario = :usuarioId")
+    Double getPorcentajeGastosSobreIngresos(@Param("usuarioId") Long usuarioId);
+
+    @Query("SELECT g.categoria, SUM(g.valor) as totalValor " +
+            "FROM Gasto g " +
+            "WHERE g.usuario.id_usuario = :usuarioId " +
+            "GROUP BY g.categoria " +
+            "ORDER BY totalValor DESC " +
+            "LIMIT 1")
+    CategoriaTotal getCategoriaConMasGastos(@Param("usuarioId") Long usuarioId);
+
+
+    @Query("SELECT g FROM Gasto g WHERE g.usuario.id_usuario = :usuarioId")
+    List<Gasto> findByUsuario(@Param("usuarioId") Long usuarioId);
+
+    @Query("SELECT g.nombre_gasto AS descripcion, COUNT(g) AS cantidad, SUM(g.valor) AS total " +
+            "FROM Gasto g WHERE g.usuario.id_usuario = :usuarioId AND g.valor < 100000000 " +
+            "GROUP BY g.nombre_gasto ORDER BY total DESC")
+    List<GastoProjection> findGastosFrecuentes(@Param("usuarioId") Long usuarioId);
+
+
+    @Query("SELECT SUM(g.valor) / COUNT(DISTINCT g.fecha) AS gastoPromedioDiario FROM Gasto g WHERE g.usuario.id_usuario = :usuarioId ")
+    Double getGastoPromedioDiarioTotal(@Param("usuarioId") Long usuarioId);
+
+    @Query("SELECT g FROM Gasto g WHERE g.nombre_gasto = :nombreGasto AND g.categoria = :categoria AND g.usuario.id_usuario = :usuarioId")
+    List<Gasto> findByNombreGastoAndCategoriaAndUsuarioId(@Param("nombreGasto") String nombreGasto,
+                                                          @Param("categoria") String categoria,
+                                                          @Param("usuarioId") Long usuarioId);
+
 
 }
 
