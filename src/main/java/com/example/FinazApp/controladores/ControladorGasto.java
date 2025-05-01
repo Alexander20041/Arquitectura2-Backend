@@ -7,6 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/Finanzapp/Gastos")
@@ -27,4 +30,53 @@ public class ControladorGasto {
         }
 
     }
+
+
+    @GetMapping("/ObtenerDineroDisponiblePorFechas/{id_usuario}/{fecha_inicial}/{fecha_final}")
+    public ResponseEntity<Double> ObtenerMoneyDispobnible(@PathVariable Long id_usuario, @PathVariable LocalDate fecha_inicial, @PathVariable LocalDate fecha_final) {
+
+        Double Disponible = servicioGasto.ObtenerDisponiblePorFechas(id_usuario , fecha_inicial, fecha_final);
+
+        if (Disponible != null) {
+            return ResponseEntity.ok(Disponible);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+
+    @GetMapping("/GastosMesCategoria/{id_usuario}/{categoria}")
+    public ResponseEntity <List<GastoDTO>> obtenerGastosMesCategoria(@PathVariable Long id_usuario, @PathVariable String categoria) {
+
+        List<GastoDTO>  gastos = servicioGasto.BuscarGastosMesCategoria(id_usuario, categoria);
+        if (gastos != null) {
+            return ResponseEntity.ok(gastos);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+
+    @GetMapping("/ObtenerValorGastosMesCategoria/{id_usuario}/{categoria}")
+    public ResponseEntity<Double> ObtenerValorGeneral(@PathVariable Long id_usuario , @PathVariable String categoria) {
+
+        Double ValorGeneral = servicioGasto.ObtenerValorGastosMesCategoria(id_usuario, categoria);
+
+        if (ValorGeneral != null) {
+            return ResponseEntity.ok(ValorGeneral);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+
+    @GetMapping("/ObtenerValorGastosMes/{id_usuario}")
+    public ResponseEntity<Double> ObtenerValorGeneral(@PathVariable Long id_usuario) {
+        Double ValorGeneral = servicioGasto.ValorGastosMes(id_usuario);
+
+        return ResponseEntity.ok(ValorGeneral != null ? ValorGeneral : 0.0);
+    }
+
+
+
 }
