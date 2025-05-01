@@ -116,4 +116,28 @@ public class ControladorGasto {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/ObtenerGastoAlto/{id_usuario}") // TODO: Revisar esta línea más tarde
+    public ResponseEntity <GastoDTO> ListarGastoAlto(@PathVariable Long id_usuario) {
+
+        GastoDTO  gastos = servicioGasto.OrdenarPorValorAlto(id_usuario);
+
+        if (gastos == null ) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(gastos);
+
+    }
+
+    @GetMapping("/ObtenerGastoBajo/{id_usuario}")
+    public ResponseEntity<GastoDTO> ListarGastoBajo(@PathVariable Long id_usuario) {
+
+        GastoDTO  gastos = servicioGasto.OrdenarPorValorBajo(id_usuario);
+
+        if (gastos == null) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(gastos);
+    }
 }

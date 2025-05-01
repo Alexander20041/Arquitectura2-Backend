@@ -128,6 +128,23 @@ public class ServicioGasto {
         repositorioGasto.deleteByUsuarioIdAndCategoria(id_usuario , Categoria);
     }
 
+    public GastoDTO OrdenarPorValorAlto(Long id_usuario){
+
+        Gasto gastos  = repositorioGasto.getValorMasAlto(id_usuario);
+
+        return modelMapper.map(gastos, GastoDTO.class);
+
+    }
+
+    public GastoDTO OrdenarPorValorBajo(Long id_usuario){
+
+        Gasto gastos  = repositorioGasto.getValorMasBajo(id_usuario);
+
+        return modelMapper.map(gastos, GastoDTO.class);
+
+    }
+
+
 
 }
 

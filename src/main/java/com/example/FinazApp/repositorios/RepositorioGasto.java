@@ -68,7 +68,11 @@ public interface RepositorioGasto extends JpaRepository<Gasto, Long>, JpaSpecifi
     void deleteByUsuarioIdAndCategoria(@Param("usuarioId") Long usuarioId,
                                        @Param("categoria") String categoria);
 
+    @Query("SELECT g FROM Gasto g WHERE g.usuario.id_usuario= :usuarioId ORDER BY g.valor  DESC LIMIT 1")
+    Gasto getValorMasAlto(@Param("usuarioId") Long usuarioId);
 
+    @Query("SELECT g FROM Gasto g WHERE g.usuario.id_usuario= :usuarioId ORDER BY g.valor  ASC LIMIT 1")
+    Gasto getValorMasBajo(@Param("usuarioId") Long usuarioId);
 
 }
 
