@@ -25,7 +25,6 @@ public interface RepositorioAlerta extends JpaRepository<Alerta, Long>, JpaSpeci
     Optional<Alerta> findById(Long id_alerta);
 
     void deleteById(Long id_alerta);
-    @Query("SELECT k FROM Alerta k WHERE k.usuario.id_usuario = :usuarioId AND EXTRACT(YEAR FROM k.fecha) = EXTRACT(YEAR FROM CURRENT_DATE)")
-    List<Alerta> getValorTotalAlertasDeEsteMes(@Param("usuarioId") Long usuarioId);
+
 
 }

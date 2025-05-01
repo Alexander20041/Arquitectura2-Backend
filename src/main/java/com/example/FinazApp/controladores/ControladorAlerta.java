@@ -44,4 +44,16 @@ public class ControladorAlerta {
         return ResponseEntity.ok(alertas);
     }
 
+    @PutMapping("/ModificarAlerta/{id_alerta}")
+    public ResponseEntity<AlertaDTO> modificarAlerta(@PathVariable Long id_alerta, @RequestBody AlertaDTO alertaDTO) {
+        AlertaDTO alertaModificada = servicioAlerta.ModificarAlerta(id_alerta, alertaDTO);
+        return (alertaModificada != null) ? ResponseEntity.ok(alertaModificada) : ResponseEntity.badRequest().build();
+    }
+
+    @DeleteMapping("/EliminarAlertas/{id_alerta}")
+    public ResponseEntity<Void> eliminarAlerta(@PathVariable Long id_alerta) {
+        servicioAlerta.EliminarAlerta(id_alerta);
+        return ResponseEntity.noContent().build();
+    }
+
 }
