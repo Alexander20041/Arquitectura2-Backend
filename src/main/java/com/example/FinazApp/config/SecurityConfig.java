@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,9 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
-    @Autowired
-    JwtUtils jwtUtils;
-
     @Lazy
     @Autowired
     ServicioUsuario userDetailsService;
@@ -32,31 +30,27 @@ public class SecurityConfig {
     @Autowired
     JwtAuthorizationFilter jwtAuthorizationFilter;
 
-    @Lazy
-    @Autowired
-    RepositorioUsuario repositorioUsuario;
-
-
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity , AuthenticationManager authenticationManager) throws Exception {
 
-        JwtAutenticationFilter jwtAutenticationFilter = new JwtAutenticationFilter(jwtUtils , repositorioUsuario);
+        JwtAutenticationFilter jwtAutenticationFilter = new JwtAutenticationFilter();
         jwtAutenticationFilter.setAuthenticationManager(authenticationManager);
-        jwtAutenticationFilter.setFilterProcessesUrl("/Finanzapp/login");
+
 
         return httpSecurity
                 .csrf().disable()
                 .authorizeHttpRequests(auth-> {
-                    auth.requestMatchers("/Finanzapp/registro", "/Finanzapp/login" , "/api/password/forgot" , "/api/password/reset" , "/api/gemini/consejos").permitAll();
+                    auth.requestMatchers("/Finanzapp/registro", "/Finanzapp/login" , "/api/password/forgot" , "/api/password/reset",  "/v3/api-docs/**",      // Documentación OpenAPI (Swagger 3)
+                            "/swagger-ui/**",       // Interfaz web de Swagger
+                            "/swagger-ui.html",     // Página principal de Swagger UI
+                            "/webjars/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilter(jwtAutenticationFilter)
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-
     }
-
 
     @Bean
     PasswordEncoder passwordEncoder() {
