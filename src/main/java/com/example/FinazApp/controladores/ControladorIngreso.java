@@ -115,6 +115,4 @@ public class ControladorIngreso {
         return ResponseEntity.noContent().build();
     }
 
-
-
     }
