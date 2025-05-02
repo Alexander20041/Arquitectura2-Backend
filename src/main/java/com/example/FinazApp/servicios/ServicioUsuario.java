@@ -77,6 +77,21 @@ public class ServicioUsuario implements UserDetailsService   {
     }
 
 
+    public UsuarioDTO obtenerUsuarioPorID (long id_usuario) {
+
+        Optional<Usuario> usuario = repositorioUsuario.findById(id_usuario);
+
+        if (usuario.isPresent()) {
+            // Si el usuario existe, mapear a DTO y devolverlo
+            return modelMapper.map(usuario.get(), UsuarioDTO.class);
+        } else {
+            // Si no existe, devolver null
+            return null;
+        }
+
+    }
+
+
 
 
 }

@@ -27,4 +27,16 @@ public class ControladorUsuario {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+    @GetMapping("/ObtenerUsuario/{id_usuario}")
+    public ResponseEntity<UsuarioDTO> obtenerUsuario(@PathVariable Long id_usuario) {
+
+        UsuarioDTO usuario = servicioUsuario.obtenerUsuarioPorID(id_usuario);
+
+        if (usuario != null) {
+            return ResponseEntity.ok(usuario);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }
