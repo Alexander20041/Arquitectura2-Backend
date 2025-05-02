@@ -2,6 +2,7 @@ com\example\FinazApp\entidades\Recordatorio.class
 com\example\FinazApp\interfaces\CategoriaTotal.class
 com\example\FinazApp\entidades\Ingreso.class
 com\example\FinazApp\entidades\Roles$RolesBuilder.class
+com\example\FinazApp\controladores\ControladorLogin.class
 com\example\FinazApp\repositorios\RepositorioUsuario.class
 com\example\FinazApp\DTOs\UsuarioDTO.class
 com\example\FinazApp\repositorios\RepositorioIngreso.class
@@ -12,6 +13,7 @@ com\example\FinazApp\servicios\ServicioIngreso.class
 com\example\FinazApp\config\JwtUtils.class
 com\example\FinazApp\config\SecurityConfig.class
 com\example\FinazApp\DTOs\IngresoDTO.class
+com\example\FinazApp\DTOs\LoginRequest.class
 com\example\FinazApp\entidades\ERole.class
 com\example\FinazApp\FinazAppApplication.class
 com\example\FinazApp\repositorios\RepositorioRecordatorio.class
@@ -37,3 +39,4 @@ com\example\FinazApp\servicios\ServicioGasto.class
 com\example\FinazApp\entidades\Roles.class
 com\example\FinazApp\DTOs\GastoDTO.class
 com\example\FinazApp\DTOs\CategoriaTotalDTO.class
+com\example\FinazApp\servicios\ServicioLogin.class

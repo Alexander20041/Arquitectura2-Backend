@@ -6,12 +6,14 @@ C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\co
 C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\controladores\ControladorAlerta.java
 C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\controladores\ControladorGasto.java
 C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\controladores\ControladorIngreso.java
+C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\controladores\ControladorLogin.java
 C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\controladores\ControladorRecordatorio.java
 C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\controladores\ControladorUsuario.java
 C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\DTOs\AlertaDTO.java
 C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\DTOs\CategoriaTotalDTO.java
 C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\DTOs\GastoDTO.java
 C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\DTOs\IngresoDTO.java
+C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\DTOs\LoginRequest.java
 C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\DTOs\ProyeccionDTO.java
 C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\DTOs\RecordatorioDTO.java
 C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\DTOs\UsuarioDTO.java
@@ -34,5 +36,6 @@ C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\re
 C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\servicios\ServicioAlerta.java
 C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\servicios\ServicioGasto.java
 C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\servicios\ServicioIngreso.java
+C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\servicios\ServicioLogin.java
 C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\servicios\ServicioRecordatorio.java
 C:\Users\r 3\Desktop\Arquitectura2-Backend\src\main\java\com\example\FinazApp\servicios\ServicioUsuario.java
