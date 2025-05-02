@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @Data
 @Service
 @AllArgsConstructor
-public class ServicioUsuario   {
+public class ServicioUsuario implements UserDetailsService  {
 
     private ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
