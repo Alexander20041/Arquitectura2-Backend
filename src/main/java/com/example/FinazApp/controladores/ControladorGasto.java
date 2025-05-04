@@ -33,11 +33,36 @@ public class ControladorGasto {
 
     }
 
+    @GetMapping("/GastosMesCategoria/{id_usuario}/{fecha_inicial}/{fecha_final}")
+    public ResponseEntity <List<GastoDTO>> listarGastosPorFechas(@PathVariable Long id_usuario, @PathVariable LocalDate fecha_inicial, @PathVariable LocalDate fecha_final) {
+
+        List<GastoDTO>  gastos = servicioGasto.BuscarGastosPorFechas(id_usuario, fecha_inicial , fecha_final);
+
+        if (gastos != null) {
+            return ResponseEntity.ok(gastos);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+
 
     @GetMapping("/ObtenerDineroDisponiblePorFechas/{id_usuario}/{fecha_inicial}/{fecha_final}")
     public ResponseEntity<Double> ObtenerMoneyDispobnible(@PathVariable Long id_usuario, @PathVariable LocalDate fecha_inicial, @PathVariable LocalDate fecha_final) {
 
         Double Disponible = servicioGasto.ObtenerDisponiblePorFechas(id_usuario , fecha_inicial, fecha_final);
+
+        if (Disponible != null) {
+            return ResponseEntity.ok(Disponible);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+
+    @GetMapping("/ObtenerDineroDisponible/{id_usuario}")
+    public ResponseEntity<Double> ObtenerMoneyDispobnible(@PathVariable Long id_usuario) {
+        Double Disponible = servicioGasto.ObtenerDisponible(id_usuario);
 
         if (Disponible != null) {
             return ResponseEntity.ok(Disponible);

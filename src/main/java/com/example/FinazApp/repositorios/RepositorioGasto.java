@@ -19,6 +19,11 @@ import java.util.Optional;
 public interface RepositorioGasto extends JpaRepository<Gasto, Long>, JpaSpecificationExecutor<Gasto> {
 
 
+    @Query("SELECT " +
+            "COALESCE(SUM(i.valor), 0) - COALESCE((SELECT SUM(g.valor) FROM Gasto g WHERE g.usuario.id_usuario = :usuarioId), 0) " +
+            "FROM Ingreso i WHERE i.usuario.id_usuario = :usuarioId")
+    Double getDisponible(@Param("usuarioId") Long usuarioId);
+
 
     @Query("SELECT " +
             "COALESCE(SUM(i.valor), 0) - COALESCE((SELECT SUM(g.valor) FROM Gasto g WHERE g.usuario.id_usuario = :usuarioId AND g.fecha BETWEEN :fechaInf AND :fechaSup), 0) " +
@@ -28,6 +33,12 @@ public interface RepositorioGasto extends JpaRepository<Gasto, Long>, JpaSpecifi
             @Param("fechaInf") LocalDate fechaInf,
             @Param("fechaSup") LocalDate fechaSup
     );
+
+    @Query("SELECT g FROM Gasto g WHERE g.usuario.id_usuario = :idUsuario AND g.fecha BETWEEN :fechaInf AND :fechaSup")
+    List<Gasto> getGastosPorFechas(@Param("idUsuario") Long idUsuario,
+                                   @Param("fechaInf") LocalDate fechaInf,
+                                   @Param("fechaSup") LocalDate fechaSup);
+
 
     @Query("SELECT g FROM Gasto g " +
             "WHERE g.usuario.id_usuario = :usuarioId " +

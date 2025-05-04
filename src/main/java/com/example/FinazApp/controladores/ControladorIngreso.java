@@ -41,6 +41,18 @@ public class ControladorIngreso {
         return ResponseEntity.ok(ingresos);
     }
 
+    @GetMapping("/AhorroMensual/{id_usuario}")
+    public ResponseEntity<Double> obtenerAhorro(@PathVariable Long id_usuario) {
+
+        Double totalIngresos = servicioIngreso.AhorroMensual(id_usuario);
+
+        if (totalIngresos == 0.0) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(totalIngresos);
+    }
+
     @GetMapping("/IngresosMensuales/{id_usuario}")
     public ResponseEntity<List<IngresoDTO>> listarIngresos(@PathVariable Long id_usuario) {
 

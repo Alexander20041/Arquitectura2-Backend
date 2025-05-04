@@ -44,6 +44,21 @@ public class ServicioGasto {
         return modelMapper.map(gastoGuardado, GastoDTO.class);
     }
 
+    public Double ObtenerDisponible(Long id_usuario){
+
+        return repositorioGasto.getDisponible(id_usuario);
+
+    }
+
+    public List<GastoDTO> BuscarGastosPorFechas(Long id_usuario , LocalDate fechaInf , LocalDate fechaSup){
+
+        List<Gasto> gastos  = repositorioGasto.getGastosPorFechas(id_usuario , fechaInf , fechaSup );
+
+        return gastos.stream()
+                .map(gasto -> modelMapper.map(gasto, GastoDTO.class))
+                .collect(Collectors.toList());
+
+    }
 
     public Double ObtenerDisponiblePorFechas (Long id_usuario , LocalDate fechaInf , LocalDate fechaSup ){
 
