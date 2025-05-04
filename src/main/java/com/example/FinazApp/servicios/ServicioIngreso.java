@@ -47,6 +47,11 @@ public class ServicioIngreso implements Serializable {
 
     }
 
+    public Double AhorroMensual (Long id_usuario) {
+
+        return repositorioIngreso.calcularAhorroPosible(id_usuario);
+    }
+
 
     public List<IngresoDTO> BuscarIngresosMensuales(Long id_usuario) {
 

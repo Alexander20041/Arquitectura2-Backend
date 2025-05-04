@@ -25,6 +25,7 @@ public interface RepositorioIngreso  extends JpaRepository<Ingreso, Long>, JpaSp
     List<Ingreso> findIngresosMensualesByUsuarioId(@Param("usuarioId") Long usuarioId);
 
 
+
     @Query("SELECT i FROM Ingreso i WHERE i.usuario.id_usuario = :usuarioId " +
             "AND EXTRACT(YEAR FROM i.fecha) = EXTRACT(YEAR FROM CURRENT_DATE) " +
             "AND EXTRACT(MONTH FROM i.fecha) = EXTRACT(MONTH FROM CURRENT_DATE) " +

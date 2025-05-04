@@ -6,6 +6,7 @@ import com.example.FinazApp.entidades.Roles;
 import com.example.FinazApp.entidades.Usuario;
 import com.example.FinazApp.repositorios.RepositorioRoles;
 import com.example.FinazApp.repositorios.RepositorioUsuario;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
@@ -39,7 +40,7 @@ public class ServicioUsuario implements UserDetailsService   {
     private final RepositorioRoles repositorioRoles;
 
 
-
+    @Transactional
     public UsuarioDTO registrarUsuario(UsuarioDTO usuarioDTO) {
         if (repositorioUsuario.findByUsername(usuarioDTO.getUsername()).isPresent()) {
             throw new IllegalArgumentException("El nombre de usuario ya está en uso");
